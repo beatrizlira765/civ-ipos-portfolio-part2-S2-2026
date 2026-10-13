@@ -93,14 +93,18 @@ def list_tasks(tasks, status=None):
         return
 
     table = Table()
-    console = Console()
+    console = Console(force_terminal=True, color_system="standard")
+
     table.add_column("Title")
     table.add_column("Description")
     table.add_column("Due Date")
     table.add_column("Status")
 
     for task in filtered:
-        table.add_row(task.title, task.description, task.due_date, task.status)
+        color = get_status_color(task.status)
+
+        color_string = f"[{color}]{task.status}[/{color}]"
+        table.add_row(task.title, task.description, task.due_date, color_string)
 
     console.print(table)
 
