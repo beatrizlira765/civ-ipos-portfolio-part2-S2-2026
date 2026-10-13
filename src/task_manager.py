@@ -122,6 +122,7 @@ def filter_tasks_by_status(tasks, status):
     """
     return [task for task in tasks if task.status == status]
 
+
 def get_status_color(status):
     if status == "pending":
         return "red"
