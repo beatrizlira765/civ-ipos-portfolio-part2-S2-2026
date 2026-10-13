@@ -107,6 +107,10 @@ def filter_tasks_by_status(tasks, status):
     Returns:
         list: A list of Task objects that match the specified status.
     """
-    return [task for task in tasks if task.status == status
+    return [task for task in tasks if task.status == status]
 
-
+def get_status_color(status):
+    if status == "pending":
+        return "red"
+    elif status == "completed":
+        return "green"
