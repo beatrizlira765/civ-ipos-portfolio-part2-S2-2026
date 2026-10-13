@@ -107,4 +107,6 @@ def filter_tasks_by_status(tasks, status):
     Returns:
         list: A list of Task objects that match the specified status.
     """
-    return [task for task in tasks if task.status == status]
+    return [task for task in tasks if task.status == status
+
+
