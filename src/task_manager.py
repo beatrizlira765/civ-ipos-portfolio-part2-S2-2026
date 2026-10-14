@@ -4,6 +4,7 @@ from datetime import datetime
 from rich.console import Console
 from rich.table import Table
 
+
 def add_task(tasks, title, description, due_date):
     """
     Add a new task to the task list.
@@ -60,6 +61,7 @@ def delete_task(tasks, title):
             save_tasks(tasks)
             return True
     return False
+
 
 def get_status_color(status):
     if status == "pending":
