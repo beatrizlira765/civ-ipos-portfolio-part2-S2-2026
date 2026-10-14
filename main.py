@@ -1,9 +1,37 @@
-from src.task_manager import add_task, delete_task, list_tasks
+from src.task_manager import add_task, delete_task, list_tasks, check_tasks
 from src.file_handler import load_tasks
+import schedule
+import threading
+import time
+from plyer import notification
+
+
+def remind(tasks):
+    message = check_tasks(tasks)
+
+    if message:
+        notification.notify(
+            title="Task List Reminder",
+            message=message,
+            timeout=10
+        )
+
+
+def run_schedule():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 def main():
     tasks = load_tasks()
+
+    remind(tasks)
+
+    schedule.every(1).minutes.do(remind, tasks)
+
+    threading.Thread(target=run_schedule, daemon=True).start()
+
     while True:
         print("\nTask Manager CLI")
         print("1. Add Task")
@@ -30,6 +58,7 @@ def main():
             break
         else:
             print("Invalid choice. Try again.")
+
 
 
 if __name__ == "__main__":

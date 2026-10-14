@@ -1,6 +1,6 @@
 from src.task import Task
 from src.file_handler import save_tasks
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def add_task(tasks, title, description, due_date):
@@ -121,3 +121,17 @@ def check_due_date(due_date, current_date):
         return "tomorrow"
     else:
         return "future"
+
+def check_tasks(tasks):
+    message = ""
+
+    for task in tasks:
+        status = check_due_date(
+            task.due_date,
+            datetime.now().strftime("%d-%m-%Y")
+        )
+
+        if status in ["overdue", "today", "tomorrow"]:
+            message += f"{status.upper()}: {task.title}\n"
+
+    return message
