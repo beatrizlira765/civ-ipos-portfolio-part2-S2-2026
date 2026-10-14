@@ -1,6 +1,6 @@
 from src.task import Task
 from src.file_handler import save_tasks
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def add_task(tasks, title, description, due_date):
@@ -108,3 +108,48 @@ def filter_tasks_by_status(tasks, status):
         list: A list of Task objects that match the specified status.
     """
     return [task for task in tasks if task.status == status]
+
+
+def check_due_date(due_date, current_date):
+    """
+    Check the due date of the current task.
+
+    Args:
+        due_date(datetime): The due date of the current task.
+        current_date(datetime): The current date of the current task.
+
+    Returns:
+        The status of the current task.
+    """
+    checked_due_date = datetime.strptime(due_date, "%d-%m-%Y")
+    checked_current_date = datetime.strptime(current_date, "%d-%m-%Y")
+    if checked_current_date == checked_due_date:
+        return "today"
+    elif checked_due_date < checked_current_date:
+        return "overdue"
+    elif checked_due_date == checked_current_date + timedelta(days=1):
+        return "tomorrow"
+    else:
+        return "future"
+
+
+def check_tasks(tasks):
+    """
+    Check the tasks in the task list, optionally filtered by status.
+
+    Args: tasks (list): The list of existing Task objects.
+
+    Returns: str: A message with tasks due today, tomorrow, or overdue.
+    """
+    message = ""
+
+    for task in tasks:
+        status = check_due_date(
+            task.due_date,
+            datetime.now().strftime("%d-%m-%Y")
+        )
+
+        if status in ["overdue", "today", "tomorrow"]:
+            message += f"{status.upper()}: {task.title}\n"
+
+    return message
