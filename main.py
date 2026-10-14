@@ -28,7 +28,7 @@ def main():
 
     remind(tasks)
 
-    schedule.every(1).minutes.do(remind, tasks)
+    schedule.every(5).hour.do(remind, tasks)
 
     threading.Thread(target=run_schedule, daemon=True).start()
 
