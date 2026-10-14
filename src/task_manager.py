@@ -1,6 +1,8 @@
 from src.task import Task
 from src.file_handler import save_tasks
 from datetime import datetime
+from rich.console import Console
+from rich.table import Table
 
 
 def add_task(tasks, title, description, due_date):
@@ -61,6 +63,13 @@ def delete_task(tasks, title):
     return False
 
 
+def get_status_color(status):
+    if status == "pending":
+        return "red"
+    elif status == "completed":
+        return "green"
+
+
 def list_tasks(tasks, status=None):
     """
     Display tasks in the task list, optionally filtered by status.
@@ -89,11 +98,22 @@ def list_tasks(tasks, status=None):
     if not filtered:
         print("No tasks found.")
         return
+
+    table = Table()
+    console = Console(force_terminal=True, color_system="standard")
+
+    table.add_column("Title")
+    table.add_column("Description")
+    table.add_column("Due Date")
+    table.add_column("Status")
+
     for task in filtered:
-        print(
-            f"{task.title} | {task.description} | "
-            f"Due: {task.due_date} | Status: {task.status}"
-        )
+        color = get_status_color(task.status)
+
+        color_string = f"[{color}]{task.status}[/{color}]"
+        table.add_row(task.title, task.description, task.due_date, color_string)
+
+    console.print(table)
 
 
 def filter_tasks_by_status(tasks, status):
@@ -108,3 +128,10 @@ def filter_tasks_by_status(tasks, status):
         list: A list of Task objects that match the specified status.
     """
     return [task for task in tasks if task.status == status]
+
+
+def get_status_color(status):
+    if status == "pending":
+        return "red"
+    elif status == "completed":
+        return "green"
