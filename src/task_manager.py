@@ -110,5 +110,14 @@ def filter_tasks_by_status(tasks, status):
     return [task for task in tasks if task.status == status]
 
 
-def check_due_date():
-    return None
+def check_due_date(due_date, current_date):
+    checked_due_date = datetime.strptime(due_date, "%d-%m-%Y")
+    checked_current_date = datetime.strptime(current_date, "%d-%m-%Y")
+    if checked_current_date == checked_due_date:
+        return "today"
+    elif checked_due_date < checked_current_date:
+        return "overdue"
+    elif checked_due_date == checked_current_date + timedelta(days=1):
+        return "tomorrow"
+    else:
+        return "future"
